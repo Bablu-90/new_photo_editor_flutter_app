@@ -1,12 +1,15 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_photo_editor_flutter_app/screens/account_page.dart';
 import 'package:new_photo_editor_flutter_app/screens/chip_widget.dart';
-import 'package:new_photo_editor_flutter_app/screens/edit_photoview.dart';
 import 'package:new_photo_editor_flutter_app/screens/grid_child.dart';
-import 'package:new_photo_editor_flutter_app/screens/header_page.dart';
+import 'package:new_photo_editor_flutter_app/screens/profile_image_picker.dart';
 import 'package:new_photo_editor_flutter_app/screens/slider_menu.dart';
+
+import 'edit_photoview.dart';
 
 class HomeScreen extends StatefulWidget {
   String email;
@@ -31,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 50,
               width: 50,
               decoration: const BoxDecoration(
-                border: Border(right: BorderSide(width: 15.0)),
                 shape: BoxShape.circle,
                 image: DecorationImage(
                     image: AssetImage("assets/images/ritik.png")),
@@ -63,24 +65,27 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.indigoAccent.shade100,
       ),
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Colors.cyan.shade100,
         buttonBackgroundColor: Colors.lightBlue.shade600,
         items: <Widget>[
-          Icon(Icons.photo, color: Colors.grey, size: 30),
           IconButton(
+            icon: Icon(Icons.photo, color: Colors.tealAccent, size: 30),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return HeaderPage();
-              }));
+              print("First Icon Pressed");
+              Get.to(() => ShowPicker());
+              /*Navigator.of(context)
+                  .pushReplacement(MaterialPageRoute(builder: (context) {
+                return ShowPicker();
+              }));*/
             },
-            icon: Icon(Icons.dark_mode, color: Colors.red, size: 32),
           ),
           Icon(Icons.home_outlined, color: Colors.cyanAccent, size: 32),
           IconButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              Get.to(EditPhotoView());
+              /*Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return EditPhotoView();
-              }));
+              }));*/
             },
             icon: Icon(
               Icons.edit_sharp,
@@ -90,9 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              Get.to(AccountPage());
+              /*Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return AccountPage();
-              }));
+              }));*/
             },
             icon: (Icon(Icons.settings_applications_sharp,
                 color: Colors.redAccent, size: 32)),
@@ -128,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                       color: Colors.black,
                       backgroundColor: Colors.lightBlueAccent,
-                      decorationColor: Colors.indigo,
+                      decorationColor: Colors.indigoAccent,
                       fontSize: 20,
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.w700,
@@ -175,3 +181,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+/*
+bottom navigation bar = Default Tab controller*/

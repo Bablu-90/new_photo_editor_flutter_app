@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:new_photo_editor_flutter_app/getx_controllers/edit_photoview_get_controller.dart';
+import 'package:new_photo_editor_flutter_app/screens/chip_widget.dart';
 
 class EditPhotoView extends StatefulWidget {
   const EditPhotoView({Key? key}) : super(key: key);
@@ -8,7 +12,8 @@ class EditPhotoView extends StatefulWidget {
 }
 
 class _EditPhotoViewState extends State<EditPhotoView> {
-  double _sliderValue = 0.34;
+  EditPhotoViewGetController editPhotoViewGetController =
+      Get.put(EditPhotoViewGetController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,10 +31,10 @@ class _EditPhotoViewState extends State<EditPhotoView> {
         ),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
           },
           icon: const Icon(
-            Icons.search_rounded,
+            Icons.arrow_back,
             size: 30,
           ),
         ),
@@ -74,7 +79,7 @@ class _EditPhotoViewState extends State<EditPhotoView> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 4.0,
+                              horizontal: 8.0,
                               vertical: 4.0,
                             ),
                             child: Row(
@@ -82,12 +87,13 @@ class _EditPhotoViewState extends State<EditPhotoView> {
                                 const Text(
                                   'Contrast',
                                   style: TextStyle(
-                                    fontSize: 25,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 const SizedBox(
-                                  width: 10,
+                                  width: 8,
+                                  height: 8,
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
@@ -96,14 +102,18 @@ class _EditPhotoViewState extends State<EditPhotoView> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(4.0),
-                                    child: Text(
-                                      '',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
+                                    child: Obx(() {
+                                      return Text(
+                                        editPhotoViewGetController
+                                            .sliderValue.value
+                                            .toStringAsFixed(2),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                                fontWeight: FontWeight.bold),
+                                      );
+                                    }),
                                   ),
                                 ),
                               ],
@@ -112,10 +122,62 @@ class _EditPhotoViewState extends State<EditPhotoView> {
                         )
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
+            Expanded(
+                child: ListView(
+              physics: ClampingScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [
+                SizedBox(
+                  width: 20,
+                ),
+                Spacer(flex: 1),
+                ChipWidget(
+                    label: Icon(Icons.brightness_4), horizontalPadding: 8),
+                SizedBox(
+                  width: 16,
+                ),
+                ChipWidget(
+                    label: Icon(Icons.water_drop_outlined),
+                    horizontalPadding: 8),
+                SizedBox(
+                  width: 16,
+                ),
+                ChipWidget(label: Icon(Icons.contrast), horizontalPadding: 8),
+                SizedBox(
+                  width: 16,
+                ),
+                ChipWidget(
+                    label: Icon(Icons.settings_brightness_rounded),
+                    horizontalPadding: 8),
+                SizedBox(
+                  width: 16,
+                ),
+                ChipWidget(label: Icon(Icons.settings), horizontalPadding: 8),
+                SizedBox(
+                  width: 16,
+                ),
+                ChipWidget(
+                  label: Icon(Icons.brightness_high_outlined),
+                ),
+                SizedBox(
+                  width: 28,
+                )
+              ],
+            )),
+            Obx(() {
+              return Slider(
+                value: editPhotoViewGetController.sliderValue.value,
+                onChanged: (value) {
+                  editPhotoViewGetController.sliderValue.value = value;
+                },
+              );
+            }),
+            SizedBox(width: 16),
           ],
         ),
       ),
